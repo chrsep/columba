@@ -1,4 +1,4 @@
-package p
+package main
 
 import (
 	"io/ioutil"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestCalculate(t *testing.T) {
+func TestColumba(t *testing.T) {
 	tests := []struct {
 		body string
 		want string
@@ -21,7 +21,7 @@ func TestCalculate(t *testing.T) {
 		req.Header.Add("Content-Type", "application/json")
 
 		rr := httptest.NewRecorder()
-		Calculate(rr, req)
+		Columba(rr, req)
 
 		out, err := ioutil.ReadAll(rr.Result().Body)
 		if err != nil {

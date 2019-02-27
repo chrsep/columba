@@ -1,13 +1,14 @@
 // Package p contains an HTTP Cloud Function.
-package p
+package main
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/getsentry/raven-go"
 	"net/http"
 )
 
-type CarrierResponse struct {
+type ShippingRate struct {
 	ServiceName string `json:"service_name"`
 	ServiceCode string `json:"service_code"`
 	TotalPrice  string `json:"total_price"`
@@ -15,14 +16,26 @@ type CarrierResponse struct {
 	Currency    string `json:"currency"`
 }
 
-type Respone struct {
-	Rates []CarrierResponse `json:"rates"`
+// Response that we send back to Shopifu
+type CarrierServiceResponse struct {
+	Rates []ShippingRate `json:"rates"`
 }
 
-// HelloWorld prints the JSON encoded "message" field in the body
-// of the request or "Hello, World!" if there isn't one.
-func Calculate(w http.ResponseWriter, r *http.Request) {
-	response := Respone{[]CarrierResponse{{
+// Payload that Shopify send to our API to get shipping rates.
+type IncomingQuery struct {
+}
+
+// Response that we get from raja ongkir's API.
+type RajaOngkirShippingRate struct {
+}
+
+func init() {
+	raven.CaptureMessageAndWait("Something bad happened and I would like to know about that", map[string]string{"category": "logging"})
+}
+
+// Entry point called by Cloud Function
+func Columba(w http.ResponseWriter, r *http.Request) {
+	response := CarrierServiceResponse{[]ShippingRate{{
 		"jne",
 		"jne-1",
 		"20000",
@@ -32,4 +45,12 @@ func Calculate(w http.ResponseWriter, r *http.Request) {
 	js, _ := json.Marshal(response)
 	w.Header().Add("Content-Type", "application/json")
 	fmt.Fprint(w, string(js))
+}
+
+func GetRates(query IncomingQuery) {
+
+}
+
+func ExtractDetails(rates RajaOngkirShippingRate) {
+
 }
