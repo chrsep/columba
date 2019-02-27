@@ -32,3 +32,10 @@ func TestColumba(t *testing.T) {
 		}
 	}
 }
+
+func TestGetRates(t *testing.T) {
+}
+
+func TestExtractDetails(t *testing.T) {
+
+}

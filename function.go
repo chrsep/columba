@@ -4,39 +4,18 @@ package columba
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/getsentry/raven-go"
 	"net/http"
+	"os"
 )
-
-type ShippingRate struct {
-	ServiceName string `json:"service_name"`
-	ServiceCode string `json:"service_code"`
-	TotalPrice  string `json:"total_price"`
-	Description string `json:"description"`
-	Currency    string `json:"currency"`
-}
-
-// Response that we send back to Shopifu
-type CarrierServiceResponse struct {
-	Rates []ShippingRate `json:"rates"`
-}
-
-// Payload that Shopify send to our API to get shipping rates.
-type IncomingQuery struct {
-}
 
 // Response that we get from raja ongkir's API.
 type RajaOngkirShippingRate struct {
-}
-
-func init() {
-	raven.CaptureMessageAndWait("Test 1", map[string]string{"category": "logging"})
+	rate
 }
 
 // Entry point called by Cloud Function
 func Columba(w http.ResponseWriter, r *http.Request) {
-	raven.CaptureMessageAndWait("Test 2", map[string]string{"category": "logging"})
-	response := CarrierServiceResponse{[]ShippingRate{{
+	response := CarrierService{[]ShippingRate{{
 		"jne",
 		"jne-1",
 		"20000",
@@ -48,10 +27,21 @@ func Columba(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(js))
 }
 
-func GetRates(query IncomingQuery) {
-
+// Get rates from raja ongkir
+func GetRates(query IncomingQuery) (RajaOngkirShippingRate, error) {
+	client := http.Client{}
+	req, err := http.NewRequest("POST", "https://api.rajaongkir.com/starter/cost", nil)
+	if err != nil {
+		return RajaOngkirShippingRate{}, err
+	}
+	req.Header.Set("key", os.Getenv("RAJA_ONGKIR_KEY"))
+	resp, err := client.Do(req)
+	var result RajaOngkirShippingRate
+	err = json.NewDecoder(resp.Body).Decode(&result)
+	return result, nil
 }
 
-func ExtractDetails(rates RajaOngkirShippingRate) {
+// extract data from raja ongkir json and return it Shopifu's requested format
+//func ExtractDetails(rates RajaOngkirShippingRate) {
 
-}
+//}
