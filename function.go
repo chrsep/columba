@@ -30,11 +30,12 @@ type RajaOngkirShippingRate struct {
 }
 
 func init() {
-	raven.CaptureMessageAndWait("Something bad happened and I would like to know about that", map[string]string{"category": "logging"})
+	raven.CaptureMessageAndWait("Test 1", map[string]string{"category": "logging"})
 }
 
 // Entry point called by Cloud Function
 func Columba(w http.ResponseWriter, r *http.Request) {
+	raven.CaptureMessageAndWait("Test 2", map[string]string{"category": "logging"})
 	response := CarrierServiceResponse{[]ShippingRate{{
 		"jne",
 		"jne-1",
