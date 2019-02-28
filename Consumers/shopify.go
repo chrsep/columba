@@ -48,9 +48,9 @@ func ExtractOrderShopify(shopifyResponse string) Order {
 			Province: gjson.Get(shopifyResponse, "rate.origin.province").String(),
 		},
 		Destination: Location{
-			City:     gjson.Get(shopifyResponse, "rate.origin.city").String(),
+			City:     gjson.Get(shopifyResponse, "rate.destination.city").String(),
 			Id:       "",
-			Province: gjson.Get(shopifyResponse, "rate.origin.province").String(),
+			Province: gjson.Get(shopifyResponse, "rate.destination.province").String(),
 		},
 		Weight: CalculateWeight(items),
 	}

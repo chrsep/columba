@@ -33,7 +33,7 @@ func TestGetShippingRates(t *testing.T) {
 			Province: "Jabodetabek",
 		},
 		Destination: Consumers.Location{
-			City:     "Klaten",
+			City:     "Tangerang Selatan",
 			Province: "Banten",
 			Id:       "",
 		},
