@@ -2,11 +2,25 @@
 package columba
 
 import (
+	"columba/Consumers"
+	"columba/Providers"
 	"encoding/json"
 	"fmt"
-	"github.com/getsentry/raven-go"
+	"io/ioutil"
 	"net/http"
 )
+
+type Location struct {
+	City     string
+	Id       string
+	Province string
+}
+
+type Order struct {
+	Destination Location
+	Origin      Location
+	Weight      int
+}
 
 type ShippingRate struct {
 	ServiceName string `json:"service_name"`
@@ -16,42 +30,13 @@ type ShippingRate struct {
 	Currency    string `json:"currency"`
 }
 
-// Response that we send back to Shopifu
-type CarrierServiceResponse struct {
-	Rates []ShippingRate `json:"rates"`
-}
-
-// Payload that Shopify send to our API to get shipping rates.
-type IncomingQuery struct {
-}
-
-// Response that we get from raja ongkir's API.
-type RajaOngkirShippingRate struct {
-}
-
-func init() {
-	raven.CaptureMessageAndWait("Test 1", map[string]string{"category": "logging"})
-}
-
 // Entry point called by Cloud Function
 func Columba(w http.ResponseWriter, r *http.Request) {
-	raven.CaptureMessageAndWait("Test 2", map[string]string{"category": "logging"})
-	response := CarrierServiceResponse{[]ShippingRate{{
-		"jne",
-		"jne-1",
-		"20000",
-		"kurir jne",
-		"IDR",
-	}}}
-	js, _ := json.Marshal(response)
+	query, _ := ioutil.ReadAll(r.Body)
+	order := Consumers.ExtractOrderShopify(string(query))
+	rates := Providers.GetShippingRates(order)
+
+	response, _ := json.Marshal(rates)
 	w.Header().Add("Content-Type", "application/json")
-	fmt.Fprint(w, string(js))
-}
-
-func GetRates(query IncomingQuery) {
-
-}
-
-func ExtractDetails(rates RajaOngkirShippingRate) {
-
+	_, _ = fmt.Fprint(w, string(response))
 }
