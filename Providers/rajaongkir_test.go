@@ -26,14 +26,14 @@ func TestGetCity(t *testing.T) {
 
 func TestGetShippingRates(t *testing.T) {
 	order := Consumers.Order{
-		Weight: 2000,
+		Weight: 1000,
 		Origin: Consumers.Location{
-			City:     "Jakarta Barat",
+			City:     "Tangerang Selatan",
 			Id:       "",
 			Province: "Jabodetabek",
 		},
 		Destination: Consumers.Location{
-			City:     "Tangerang Selatan",
+			City:     "Klaten",
 			Province: "Banten",
 			Id:       "",
 		},
