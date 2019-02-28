@@ -87,9 +87,9 @@ func GetShippingRates(order Consumers.Order) (shippingRates []Consumers.Shipping
 			shippingRates = append(shippingRates, Consumers.ShippingRate{
 				Currency:    "IDR",
 				ServiceCode: parsedResponse.Rajaongkir.Results[0].Code + " " + cost.Service,
-				ServiceName: parsedResponse.Rajaongkir.Results[0].Name,
-				Description: cost.Description,
-				TotalPrice:  string(service.Value),
+				ServiceName: parsedResponse.Rajaongkir.Results[0].Code + " " + cost.Service,
+				Description: cost.Description + ", estimated delivery time after shipping: " + service.Etd + " days.",
+				TotalPrice:  strconv.Itoa(service.Value),
 			})
 		}
 	}
