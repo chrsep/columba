@@ -1,7 +1,7 @@
 package Providers
 
 import (
-	"columba"
+	"columba/Consumers"
 	"testing"
 )
 
@@ -25,14 +25,14 @@ func TestGetCity(t *testing.T) {
 }
 
 func TestGetShippingRates(t *testing.T) {
-	order := columba.Order{
+	order := Consumers.Order{
 		Weight: 2000,
-		Origin: columba.Location{
+		Origin: Consumers.Location{
 			City:     "Jakarta Barat",
 			Id:       "",
 			Province: "Jabodetabek",
 		},
-		Destination: columba.Location{
+		Destination: Consumers.Location{
 			City:     "Tangerang Selatan",
 			Province: "Banten",
 			Id:       "",

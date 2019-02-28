@@ -1,7 +1,6 @@
 package Consumers
 
 import (
-	"columba"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"testing"
@@ -43,17 +42,17 @@ func TestExtractOrderShopify(t *testing.T) {
 	}
 	tests := []struct {
 		body string
-		want columba.Order
+		want Order
 	}{
 		{
 			body: string(json),
-			want: columba.Order{
-				Destination: columba.Location{
+			want: Order{
+				Destination: Location{
 					Province: "ON",
 					Id:       "",
 					City:     "Ottawa",
 				},
-				Origin: columba.Location{
+				Origin: Location{
 					Province: "ON",
 					City:     "Ottawa",
 				},

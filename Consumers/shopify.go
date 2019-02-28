@@ -1,43 +1,30 @@
 package Consumers
 
 import (
-	"columba"
 	"github.com/tidwall/gjson"
 )
 
-type Item struct {
-	Name               string
-	Sku                string
-	Quantity           string
-	Grams              string
-	Price              string
-	Vendor             string
-	RequiresShipping   bool
-	Taxable            bool
-	FulfillmentService string
-	Properties         string
-	ProductId          int
-	VariantId          int
-}
-
-type Location struct {
-	Country     string
-	PostalCode  string
-	Province    string
-	City        string
-	Name        string
-	Address1    string
-	Address2    string
-	Address3    string
-	Phone       string
-	Fax         string
-	Email       string
-	AddressType string
-	CompanyName string
-}
-
 type CarrierServiceResponse struct {
-	Rates []columba.ShippingRate `json:"rates"`
+	Rates []ShippingRate `json:"rates"`
+}
+type Location struct {
+	City     string
+	Id       string
+	Province string
+}
+
+type Order struct {
+	Destination Location
+	Origin      Location
+	Weight      int
+}
+
+type ShippingRate struct {
+	ServiceName string `json:"service_name"`
+	ServiceCode string `json:"service_code"`
+	TotalPrice  string `json:"total_price"`
+	Description string `json:"description"`
+	Currency    string `json:"currency"`
 }
 
 func CalculateWeight(items gjson.Result) int {
@@ -51,16 +38,16 @@ func CalculateWeight(items gjson.Result) int {
 	return totalWeight
 }
 
-func ExtractOrderShopify(shopifyResponse string) columba.Order {
+func ExtractOrderShopify(shopifyResponse string) Order {
 	items := gjson.Get(shopifyResponse, "rate.items")
 
-	return columba.Order{
-		Origin: columba.Location{
+	return Order{
+		Origin: Location{
 			City:     gjson.Get(shopifyResponse, "rate.origin.city").String(),
 			Id:       "",
 			Province: gjson.Get(shopifyResponse, "rate.origin.province").String(),
 		},
-		Destination: columba.Location{
+		Destination: Location{
 			City:     gjson.Get(shopifyResponse, "rate.origin.city").String(),
 			Id:       "",
 			Province: gjson.Get(shopifyResponse, "rate.origin.province").String(),

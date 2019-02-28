@@ -16,7 +16,7 @@ The simplest way to deploy your own columba instance is as a Google Cloud Functi
 
 ### Pre-requisites
 1. RajaOngkir account and API key
-2. Sentry account and API key (optional, only if you want monitoring)
+2. Sentry account and API key (optional, only if you want monitoring).
 
 ### Deployment
 This is my preferred way to deploy:
@@ -24,6 +24,8 @@ This is my preferred way to deploy:
 1. Fork this repo
 2. [Mirror](https://cloud.google.com/source-repositories/docs/mirroring-a-github-repository) your fork on Google's Cloud Source
 for use with Cloud Function.
-3. [Deploy](https://cloud.google.com/functions/docs/deploying/console) to Google Cloud Function using Cloud Source Repository.
-    * While creating the function, also add RajaOngkir API as environment variable named `RAJA_ONGKIR_KEY`.
-    * To turn sentry on, just add your sentry DSN as envronment variable named `SENTRY_DSN`
+3. [Deploy](https://cloud.google.com/functions/docs/deploying/console) to Google Cloud Function using Cloud Source Repository that 
+you just created.
+    * While creating the function, set `Function to execute` field as Columba.
+    * Also add RajaOngkir API as environment variable named `RAJA_ONGKIR_KEY`.
+    * To turn sentry on, just add your sentry DSN as environment variable named `SENTRY_DSN` also.

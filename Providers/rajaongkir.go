@@ -1,7 +1,7 @@
 package Providers
 
 import (
-	"columba"
+	"columba/Consumers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -61,7 +61,7 @@ type RajaOngkirCostResponse struct {
 	Rajaongkir Data `json:"rajaongkir"`
 }
 
-func GetShippingRates(order columba.Order) (shippingRates []columba.ShippingRate) {
+func GetShippingRates(order Consumers.Order) (shippingRates []Consumers.ShippingRate) {
 	destination := GetCity(order.Destination.City)
 	origin := GetCity(order.Origin.City)
 
@@ -83,7 +83,7 @@ func GetShippingRates(order columba.Order) (shippingRates []columba.ShippingRate
 
 	for _, cost := range parsedResponse.Rajaongkir.Results[0].Costs {
 		for _, service := range cost.Cost {
-			shippingRates = append(shippingRates, columba.ShippingRate{
+			shippingRates = append(shippingRates, Consumers.ShippingRate{
 				Currency:    "IDR",
 				ServiceCode: parsedResponse.Rajaongkir.Results[0].Code + " " + cost.Service,
 				ServiceName: parsedResponse.Rajaongkir.Results[0].Name,
@@ -96,7 +96,7 @@ func GetShippingRates(order columba.Order) (shippingRates []columba.ShippingRate
 }
 
 func GetCity(cityName string) (result City) {
-	jsonFile, err := ioutil.ReadFile("Providers/city_data.json")
+	jsonFile, err := ioutil.ReadFile("city_data.json")
 	if err != nil {
 		return
 	}
