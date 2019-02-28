@@ -97,7 +97,7 @@ func GetShippingRates(order Consumers.Order) (shippingRates []Consumers.Shipping
 }
 
 func GetCity(cityName string) (result City) {
-	jsonFile, err := ioutil.ReadFile("city_data.json")
+	jsonFile, err := ioutil.ReadFile("Providers/city_data.json")
 	if err != nil {
 		cwd, _ := os.Getwd()
 		err = raven.WrapWithExtra(err, map[string]interface{}{"cwd": cwd})
