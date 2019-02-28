@@ -4,7 +4,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type CarrierServiceResponse struct {
+type ShopifyCarrierServiceResponse struct {
 	Rates []ShippingRate `json:"rates"`
 }
 type Location struct {
@@ -54,4 +54,8 @@ func ExtractOrderShopify(shopifyResponse string) Order {
 		},
 		Weight: CalculateWeight(items),
 	}
+}
+
+func CreateShopifyResponse(rates []ShippingRate) ShopifyCarrierServiceResponse {
+	return ShopifyCarrierServiceResponse{Rates: rates}
 }

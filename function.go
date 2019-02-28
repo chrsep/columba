@@ -26,7 +26,7 @@ func Columba(w http.ResponseWriter, r *http.Request) {
 		}
 		order := Consumers.ExtractOrderShopify(string(query))
 		rates := Providers.GetShippingRates(order)
-		response, _ = json.Marshal(rates)
+		response, _ = json.Marshal(Consumers.CreateShopifyResponse(rates))
 
 		w.Header().Add("Content-Type", "application/json")
 	}, nil)
