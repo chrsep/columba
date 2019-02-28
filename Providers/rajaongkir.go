@@ -3,6 +3,7 @@ package Providers
 import (
 	"columba/Consumers"
 	"encoding/json"
+	"github.com/getsentry/raven-go"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -98,12 +99,14 @@ func GetShippingRates(order Consumers.Order) (shippingRates []Consumers.Shipping
 func GetCity(cityName string) (result City) {
 	jsonFile, err := ioutil.ReadFile("city_data.json")
 	if err != nil {
-		return
+		cwd, _ := os.Getwd()
+		err = raven.WrapWithExtra(err, map[string]interface{}{"cwd": cwd})
+		panic(err)
 	}
 	var cities []City
 	err = json.Unmarshal(jsonFile, &cities)
 	if err != nil {
-		return
+		panic(err)
 	}
 
 	for _, city := range cities {
